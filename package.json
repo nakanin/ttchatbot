@@ -8,6 +8,15 @@
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
+  "build": {
+    "extraFiles": [
+      {
+        "from": "src/main/icon.png",
+        "to": "resources",
+        "filter": ["**/*"]
+      }
+    ]
+  },
   "dependencies": {
     "source-map-support": "^0.5.16"
   },

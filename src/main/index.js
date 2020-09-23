@@ -44,7 +44,8 @@ function createMainWindow() {
 }
 
 function setUpTray() {
-  tray = new Tray(__dirname + '/icon.png');
+  const iconPath = isDevelopment ? __dirname + '/icon.png' : path.join(process.resourcesPath, "icon.png")
+  tray = new Tray(iconPath);
   tray.on('click', () => {
     if (!mainWindow.isVisible()) {
       mainWindow.reload()
