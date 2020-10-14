@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, screen, ipcMain, BrowserWindow, Tray, Menu } from 'electron'
+import { app, screen, globalShortcut, ipcMain, BrowserWindow, Tray, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import os from 'os'
@@ -45,16 +45,20 @@ function createMainWindow() {
   return window
 }
 
+function showMainWindow() {
+  if (!mainWindow.isVisible()) {
+    mainWindow.reload()
+    setTimeout(() => {
+      mainWindow.show()
+    }, 500)
+  }
+}
+
 function setUpTray() {
   const iconPath = isDevelopment ? __dirname + '/icon.png' : path.join(process.resourcesPath, "icon.png")
   tray = new Tray(iconPath);
   tray.on('click', () => {
-    if (!mainWindow.isVisible()) {
-      mainWindow.reload()
-      setTimeout(() => {
-        mainWindow.show()
-      }, 500)
-    }
+    showMainWindow()
   })
   const contextMenu = Menu.buildFromTemplate([
     {label: '設定', click: () => {
@@ -95,6 +99,10 @@ app.on('activate', () => {
 app.whenReady().then(() => {
   mainWindow = createMainWindow()
   setUpTray()
+
+  globalShortcut.register('CommandOrControl+Shift+Q', () => {
+    showMainWindow()
+  })
 })
 
 const preferences = new ElectronPreferences({
