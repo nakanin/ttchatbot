@@ -3,6 +3,8 @@
 import { app, screen, ipcMain, BrowserWindow, Tray, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
+import os from 'os'
+import ElectronPreferences from 'electron-preferences'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -55,6 +57,9 @@ function setUpTray() {
     }
   })
   const contextMenu = Menu.buildFromTemplate([
+    {label: '設定', click: () => {
+      preferences.show()
+    }},
     {label: '終了', click: () => {
       mainWindow = null;
       app.quit();
@@ -90,4 +95,42 @@ app.on('activate', () => {
 app.on('ready', () => {
   mainWindow = createMainWindow()
   setUpTray()
+})
+
+const preferences = new ElectronPreferences({
+  'dataStore': path.resolve(app.getPath('userData'), 'preferences.json'),
+  'defaults': {
+    'setting': {
+      'title': 'Google',
+      'url': 'https://www.google.com/search?q=',
+    }
+  },
+  'sections': [
+    {
+      'id': 'setting',
+      'label': '設定',
+      'icon': 'settings-gear-63',
+      'form': {
+        'groups': [
+          {
+            'label': '検索する場所の設定',
+            'fields': [
+              {
+                'label': '名前',
+                'key': 'title',
+                'type': 'text',
+                'help': '単にチャットのやり取りで表示されるだけです'
+              },
+              {
+                'label': 'URL',
+                'key': 'url',
+                'type': 'text',
+                'help': 'このURLの後に入力したキーワードをつけてブラウザで表示します'
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 })

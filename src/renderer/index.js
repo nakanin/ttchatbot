@@ -19,10 +19,8 @@ const botui = BotUI('app', {
   vue: Vue
 })
 
-const config = {
-  title: 'Google',
-  url: 'https://www.google.com/search?q='
-}
+const preferences = ipcRenderer.sendSync('getPreferences')
+const config = { ...preferences.setting }
 
 // チャットのやり取りを定義
 botui.message.add({
