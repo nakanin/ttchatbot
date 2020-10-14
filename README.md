@@ -1,4 +1,4 @@
-# ttchatbox
+# ttchatbot
 
 ## Development Scripts
 
