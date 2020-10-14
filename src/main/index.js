@@ -92,7 +92,7 @@ app.on('activate', () => {
 })
 
 // create main BrowserWindow when electron is ready
-app.on('ready', () => {
+app.whenReady().then(() => {
   mainWindow = createMainWindow()
   setUpTray()
 })
