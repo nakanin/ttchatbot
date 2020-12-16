@@ -21,6 +21,17 @@ const botui = BotUI('app', {
 
 const preferences = ipcRenderer.sendSync('getPreferences')
 const config = { ...preferences.setting }
+const settings = []
+const maxSettingNo = 5;
+for (let i = 1; i <= maxSettingNo; i++) {
+  // 設定があるものだけ取り出す
+  if (config['title' + i] && config['url' + i]) {
+    settings.push({
+      title: config['title' + i],
+      url: config['url' + i],
+    })
+  }  
+}
 
 // チャットのやり取りを定義
 botui.message.add({
@@ -34,12 +45,42 @@ botui.message.add({
     }
   })
 }).then((res) => {
+  if (settings.length === 1) {
+    const setting = settings[0]
+    return Promise.resolve({
+      value: {
+        title: setting.title,
+        url: setting.url,
+        value: res.value  
+      }
+    })
+  }
+  return botui.message.add({
+    delay: 1000,
+    content: 'どこを探しますか？'
+  }).then(() => {
+    const actions = settings.map(setting => { 
+      return {
+        text: setting.title,
+        value: {
+          title: setting.title,
+          url: setting.url,
+          value: res.value  
+        }
+      } 
+    })
+    return botui.action.button({
+      action: actions
+    })  
+  })
+}).then((res) => {
+  const cond = res.value
   botui.message.add({
     delay: 1000,
-    content: config.title + ' で「' + res.value + '」を探します...'
-  })
+    content: cond.title + ' で「' + cond.value + '」を探します...'
+  })  
   setTimeout(() => {
-    shell.openExternal(config.url + res.value)
+    shell.openExternal(cond.url + cond.value)
     ipcRenderer.invoke('hide-window')
   }, 2000)
 })

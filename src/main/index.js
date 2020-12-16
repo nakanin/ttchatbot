@@ -14,7 +14,7 @@ let tray
 function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   const windowWidth = 400
-  const windowHeight = 200
+  const windowHeight = 250
   const margin = 10
   const window = new BrowserWindow({
     width: windowWidth,
@@ -109,8 +109,8 @@ const preferences = new ElectronPreferences({
   'dataStore': path.resolve(app.getPath('userData'), 'preferences.json'),
   'defaults': {
     'setting': {
-      'title': 'Google',
-      'url': 'https://www.google.com/search?q=',
+      'title1': 'Google',
+      'url1': 'https://www.google.com/search?q=',
     }
   },
   'sections': [
@@ -121,19 +121,79 @@ const preferences = new ElectronPreferences({
       'form': {
         'groups': [
           {
-            'label': '検索する場所の設定',
+            'label': '検索する場所1',
             'fields': [
               {
                 'label': '名前',
-                'key': 'title',
+                'key': 'title1',
                 'type': 'text',
                 'help': '単にチャットのやり取りで表示されるだけです'
               },
               {
                 'label': 'URL',
-                'key': 'url',
+                'key': 'url1',
                 'type': 'text',
                 'help': 'このURLの後に入力したキーワードをつけてブラウザで表示します'
+              }
+            ]
+          },
+          {
+            'label': '検索する場所2（任意）',
+            'fields': [
+              {
+                'label': '名前',
+                'key': 'title2',
+                'type': 'text',
+              },
+              {
+                'label': 'URL',
+                'key': 'url2',
+                'type': 'text',
+              }
+            ]
+          },
+          {
+            'label': '検索する場所3（任意）',
+            'fields': [
+              {
+                'label': '名前',
+                'key': 'title3',
+                'type': 'text',
+              },
+              {
+                'label': 'URL',
+                'key': 'url3',
+                'type': 'text',
+              }
+            ]
+          },
+          {
+            'label': '検索する場所4（任意）',
+            'fields': [
+              {
+                'label': '名前',
+                'key': 'title4',
+                'type': 'text',
+              },
+              {
+                'label': 'URL',
+                'key': 'url4',
+                'type': 'text',
+              }
+            ]
+          },
+          {
+            'label': '検索する場所5（任意）',
+            'fields': [
+              {
+                'label': '名前',
+                'key': 'title5',
+                'type': 'text',
+              },
+              {
+                'label': 'URL',
+                'key': 'url5',
+                'type': 'text',
               }
             ]
           }
